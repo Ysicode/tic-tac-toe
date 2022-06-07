@@ -81,3 +81,16 @@ tr td:last-child {
 .d-none {
     display: none;
 }
+
+.horizontal_line {
+    width: 380px;
+    height: 5px;
+    background-color: gainsboro;
+    position: absolute;
+    transform: scaleX(0.0);
+    transition: transform 225ms ease-in-out;
+}
+
+.turn_vertical {
+    transform: rotate(90deg) scaleX(0.0);
+}
