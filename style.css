@@ -89,8 +89,52 @@ tr td:last-child {
     position: absolute;
     transform: scaleX(0.0);
     transition: transform 225ms ease-in-out;
+    z-index: 99;
 }
 
 .turn_vertical {
     transform: rotate(90deg) scaleX(0.0);
+}
+
+.winner_overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #191a1af0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    z-index: 999;
+}
+
+.winner {
+    font-size: 40px;
+    color: #3ab3eafc;
+    transform: scaleX(0.0) scale3d(0.0, 0.0, 0.0) scaleY(0.0);
+    transition: transform 225ms ease-in-out;
+}
+
+.d-none {
+    display: none;
+}
+
+.d-flex_column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 90vw;
+}
+
+.h2 {
+    font-size: 50px;
+    color: gainsboro;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.d-flex_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
