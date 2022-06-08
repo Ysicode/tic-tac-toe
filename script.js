@@ -99,38 +99,42 @@ function winnerPlayer1() {
     document.getElementById('winner_is').innerHTML = '';
     setTimeout(function () {
         showAnimatedWinner1();
+        showAnimatedPlayer();
         setTimeout(function () {
-            showAnimatedPlayer();
-        }, 500);
+            document.getElementById('area_restart').innerHTML = `
+        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
+        `;
+        }, 3500);
     }, 1000);
 }
 
 function showAnimatedWinner1() {
     document.getElementById('winner_overlay').classList.remove('d-none');
     document.getElementById('winner').style.color = '#75e690';
-    document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-    document.getElementById('area_restart').innerHTML = `
-        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
-        `;
+    setTimeout(() => {
+        document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
+    }, 100);
 }
 
 function winnerPlayer2() {
     document.getElementById('winner_is').innerHTML = '';
     setTimeout(function () {
         showAnimatedWinner2();
+        showAnimatedPlayer();
         setTimeout(function () {
-            showAnimatedPlayer();
-        }, 500);
+            document.getElementById('area_restart').innerHTML = `
+        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
+        `;
+        }, 3500);
     }, 1000);
 }
 
 function showAnimatedWinner2() {
     document.getElementById('winner_overlay').classList.remove('d-none');
     document.getElementById('winner').style.color = '#3ab3eafc';
-    document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-    document.getElementById('area_restart').innerHTML = `
-        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
-        `;
+    setTimeout(() => {
+        document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
+    }, 100);
 }
 
 function showAnimatedPlayer() {
@@ -153,18 +157,17 @@ function restart() {
 function resetOverlay() {
     document.getElementById('winner_overlay').classList.add('d-none');
     document.getElementById('winner').innerHTML = 'Winner';
+    document.getElementById('area_restart').innerHTML = '';
+    document.getElementById('winner').style.transform = 'scaleX(0.0) scale3d(0.0, 0.0, 0.0) scaleY(0.0)'
+    document.getElementById('winner_is').innerHTML = '';
     resetLines();
 }
 
 function resetLines() {
-    for (let i = 1; i < 3; i++) {
+    for (let i = 1; i < 9; i++) {
         document.getElementById('line_' + i).style.transform = 'scaleX(0.0)';
     }
-    for (let i = 3; i < 6; i++) {
-        document.getElementById('line_' + i).style.transform = 'scaleX(0.0)';
-    }
-    document.getElementById('line_7').style.transform = 'scaleX(0.0)';
-    document.getElementById('line_8').style.transform = 'scaleX(0.0)';
+   
     for (let i = 0; i < 9; i++) {
         document.getElementById('circle_' + i).classList.add('d-none');
         document.getElementById('x_' + i).classList.add('d-none');
