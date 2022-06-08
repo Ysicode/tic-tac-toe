@@ -2,22 +2,24 @@ let fieldsShape = [];
 let currentShape = 'x';
 let gameOver = false;
 let winner;
-
+let equal = 0;
+let player = '';
 function fillShape(id) {
     if (!fieldsShape[id] && !gameOver) {
         fieldsShape[id] = currentShape;
-    if (currentShape == 'x') {
-        currentShape = 'circle';
-        document.getElementById('player2').classList.remove('d-none');
-        document.getElementById('player1').classList.add('d-none')
-    } else {
-        currentShape = 'x';
-        document.getElementById('player1').classList.remove('d-none')
-        document.getElementById('player2').classList.add('d-none');
+        if (currentShape == 'x') {
+            currentShape = 'circle';
+            document.getElementById('player2').classList.remove('d-none');
+            document.getElementById('player1').classList.add('d-none')
+        } else {
+            currentShape = 'x';
+            document.getElementById('player1').classList.remove('d-none')
+            document.getElementById('player2').classList.add('d-none');
+        }
+        draw();
+        checkWin();
+        checkEqual();
     }
-    draw();
-    checkWin();
-    }  
 }
 
 function draw() {
@@ -40,11 +42,13 @@ function checkWin() {
 
     if (winner) {
         gameOver = true;
-        if(winner == 'circle') {
+        if (winner == 'circle') {
+            player = 'Player 2';
             winnerPlayer2();
         } else {
+            player = 'Player 1';
             winnerPlayer1();
-        }  
+        }
     }
 }
 
@@ -90,24 +94,78 @@ function checkDiagonalLines() {
 }
 
 function winnerPlayer1() {
-    setTimeout(function(){
+    document.getElementById('winner_is').innerHTML = '';
+    setTimeout(function () {
         document.getElementById('winner_overlay').classList.remove('d-none');
+        document.getElementById('winner').style.color = '#75e690';
         document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-        document.getElementById('winner').style.color = '#75e690'
-        document.getElementById('winner_is').innerHTML = `
-        <img src="img/x.png" alt="">
-        <h2 class="h2">Player 1</h2>
+        document.getElementById('area_restart').innerHTML = `
+        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
         `;
+        setTimeout(function () {
+            document.getElementById('winner_is').innerHTML = `
+        <img src="img/x.png" alt="">
+        <h2 class="h2">${player}</h2>
+        `;
+        }, 500);
     }, 1000);
 }
 
 function winnerPlayer2() {
-    setTimeout(function(){
+    document.getElementById('winner_is').innerHTML = '';
+    setTimeout(function () {
         document.getElementById('winner_overlay').classList.remove('d-none');
+        document.getElementById('winner').style.color = '#3ab3eafc';
         document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-        document.getElementById('winner_is').innerHTML = `
-        <img src="img/circle.png" alt="">
-        <h2 class="h2">Player 2</h2>
+        document.getElementById('area_restart').innerHTML = `
+        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
         `;
+        setTimeout(function () {
+            document.getElementById('winner_is').innerHTML = `
+            <img src="img/circle.png" alt="">
+            <h2 class="h2">${player}</h2>
+            `;
+        }, 500);
     }, 1000);
+}
+
+function restart() {
+    gameOver = false;
+    fieldsShape = [];
+    currentShape = 'x';
+    winner = '';
+    equal = 0;
+    document.getElementById('winner_overlay').classList.add('d-none');
+    for (let i = 1; i < 3; i++) {
+        document.getElementById('line_' + i).style.transform = 'scaleX(0.0)';
+    }
+    for (let i = 3; i < 6; i++) {
+        document.getElementById('line_' + i).style.transform = 'scaleX(0.0) rotate(90deg)';
+    }
+    document.getElementById('line_7').style.transform = 'scaleX(0.0) rotate(45deg)';
+    document.getElementById('line_8').style.transform = 'scaleX(0.0) rotate(315deg)';
+
+    for (let i = 0; i < 9; i++) {
+        document.getElementById('circle_' + i).classList.add('d-none');
+        document.getElementById('x_' + i).classList.add('d-none');
+    }
+    document.getElementById('winner').innerHTML = 'Winner';
+
+}
+
+function checkEqual() {
+equal++;
+
+    if (equal == 9 && !gameOver) {
+        setTimeout(function () {
+            document.getElementById('winner_overlay').classList.remove('d-none');
+            document.getElementById('winner').innerHTML = `Equal`;
+
+            document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
+            document.getElementById('area_restart').innerHTML = `
+            <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
+            `;
+            document.getElementById('winner_is').innerHTML = '';
+        }, 500);
+    } 
 }
