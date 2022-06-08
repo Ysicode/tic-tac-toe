@@ -12,7 +12,7 @@
 
 <body>
         <h1 id="player1" class=" player1"><img src="img/x.png" alt="">Player 1</h1>
-        <h1 id="player2" class="player2 d-none"><img src="img/circle.png" alt="">Player 2</h1>
+        <h1 id="player2" class="player1 d-none"><img src="img/circle.png" alt="">Player 2</h1>
         <div id="winner_overlay" class="winner_overlay d-none">
             <div class="d-flex_column">
                 <p id="winner" class="winner">WINNER</p>
@@ -24,18 +24,20 @@
                 </div>
             </div>
         </div>
+     <div class="area_lines">
+        <div id="line_1" class="horizontal_line" style="top: 15.5%;"></div>
+        <div id="line_2" class="horizontal_line" style="top: 50%;"></div>
+        <div id="line_3" class="horizontal_line" style="top: 83%;"></div>
+      
+        <div id="line_4" class="horizontal_line turn_vertical" style="left: -31%;"></div>
+        <div id="line_5" class="horizontal_line turn_vertical" style="left: 3%;"></div>
+        <div id="line_6" class="horizontal_line turn_vertical" style="left: 37%;"></div>
+      
+        <div id="line_7" class="horizontal_line turn_diagonal_right" style="left: 3%; transform: rotate(45deg) scaleX(0.0);"></div>
+        <div id="line_8" class="horizontal_line turn_diagonal_left" style="left: 2.6%; transform: rotate(-45deg) scaleX(0.0)"></div>
      
-   <div id="line_1" class="horizontal_line" style="top: 285px;"></div>
-   <div id="line_2" class="horizontal_line" style="top: 425px;"></div>
-   <div id="line_3" class="horizontal_line" style="top: 560px;"></div>
- 
-   <div id="line_4" class="horizontal_line turn_vertical" style="left: 67px;top: 425px;"></div>
-   <div id="line_5" class="horizontal_line turn_vertical" style="left: 205px;top: 425px;"></div>
-   <div id="line_6" class="horizontal_line turn_vertical" style="left: 340px;top: 425px;"></div>
- 
-   <div id="line_7" class="horizontal_line turn_vertical" style="left: 203px;top: 422px; transform: rotate(45deg) scaleX(0.0);"></div>
-   <div id="line_8" class="horizontal_line turn_vertical" style="left: 203px;top: 422px; transform: rotate(315deg) scaleX(0.0)"></div>
-
+     </div>
+   
     
     <table>
         <tr>

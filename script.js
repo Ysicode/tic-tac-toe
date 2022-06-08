@@ -4,22 +4,26 @@ let gameOver = false;
 let winner;
 let equal = 0;
 let player = '';
+
 function fillShape(id) {
     if (!fieldsShape[id] && !gameOver) {
         fieldsShape[id] = currentShape;
         if (currentShape == 'x') {
             currentShape = 'circle';
-            document.getElementById('player2').classList.remove('d-none');
-            document.getElementById('player1').classList.add('d-none')
+            togglePlayers();
         } else {
             currentShape = 'x';
-            document.getElementById('player1').classList.remove('d-none')
-            document.getElementById('player2').classList.add('d-none');
+            togglePlayers();
         }
         draw();
         checkWin();
         checkEqual();
     }
+}
+
+function togglePlayers() {
+    document.getElementById('player2').classList.toggle('d-none');
+    document.getElementById('player1').classList.toggle('d-none');
 }
 
 function draw() {
@@ -34,12 +38,10 @@ function draw() {
     }
 }
 
-
 function checkWin() {
     checkHorizontalLines();
     checkVerticalLines();
     checkDiagonalLines();
-
     if (winner) {
         gameOver = true;
         if (winner == 'circle') {
@@ -89,44 +91,53 @@ function checkDiagonalLines() {
     }
     if (fieldsShape[2] == fieldsShape[4] && fieldsShape[4] == fieldsShape[6] && fieldsShape[2]) {
         winner = fieldsShape[2];
-        document.getElementById('line_8').style.transform = 'scaleX(1) rotate(315deg)';
+        document.getElementById('line_8').style.transform = 'scaleX(1) rotate(-45deg)';
     }
 }
 
 function winnerPlayer1() {
     document.getElementById('winner_is').innerHTML = '';
     setTimeout(function () {
-        document.getElementById('winner_overlay').classList.remove('d-none');
-        document.getElementById('winner').style.color = '#75e690';
-        document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-        document.getElementById('area_restart').innerHTML = `
-        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
-        `;
+        showAnimatedWinner1();
         setTimeout(function () {
-            document.getElementById('winner_is').innerHTML = `
-        <img src="img/x.png" alt="">
-        <h2 class="h2">${player}</h2>
-        `;
+            showAnimatedPlayer();
         }, 500);
     }, 1000);
+}
+
+function showAnimatedWinner1() {
+    document.getElementById('winner_overlay').classList.remove('d-none');
+    document.getElementById('winner').style.color = '#75e690';
+    document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
+    document.getElementById('area_restart').innerHTML = `
+        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
+        `;
 }
 
 function winnerPlayer2() {
     document.getElementById('winner_is').innerHTML = '';
     setTimeout(function () {
-        document.getElementById('winner_overlay').classList.remove('d-none');
-        document.getElementById('winner').style.color = '#3ab3eafc';
-        document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-        document.getElementById('area_restart').innerHTML = `
-        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
-        `;
+        showAnimatedWinner2();
         setTimeout(function () {
-            document.getElementById('winner_is').innerHTML = `
-            <img src="img/circle.png" alt="">
-            <h2 class="h2">${player}</h2>
-            `;
+            showAnimatedPlayer();
         }, 500);
     }, 1000);
+}
+
+function showAnimatedWinner2() {
+    document.getElementById('winner_overlay').classList.remove('d-none');
+    document.getElementById('winner').style.color = '#3ab3eafc';
+    document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
+    document.getElementById('area_restart').innerHTML = `
+        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
+        `;
+}
+
+function showAnimatedPlayer() {
+    document.getElementById('winner_is').innerHTML = `
+    <img src="img/${winner}.png" alt="">
+    <h2 class="h2">${player}</h2>
+    `;
 }
 
 function restart() {
@@ -135,37 +146,42 @@ function restart() {
     currentShape = 'x';
     winner = '';
     equal = 0;
+    player = 'x';
+    resetOverlay();
+}
+
+function resetOverlay() {
     document.getElementById('winner_overlay').classList.add('d-none');
+    document.getElementById('winner').innerHTML = 'Winner';
+    resetLines();
+}
+
+function resetLines() {
     for (let i = 1; i < 3; i++) {
         document.getElementById('line_' + i).style.transform = 'scaleX(0.0)';
     }
     for (let i = 3; i < 6; i++) {
-        document.getElementById('line_' + i).style.transform = 'scaleX(0.0) rotate(90deg)';
+        document.getElementById('line_' + i).style.transform = 'scaleX(0.0)';
     }
-    document.getElementById('line_7').style.transform = 'scaleX(0.0) rotate(45deg)';
-    document.getElementById('line_8').style.transform = 'scaleX(0.0) rotate(315deg)';
-
+    document.getElementById('line_7').style.transform = 'scaleX(0.0)';
+    document.getElementById('line_8').style.transform = 'scaleX(0.0)';
     for (let i = 0; i < 9; i++) {
         document.getElementById('circle_' + i).classList.add('d-none');
         document.getElementById('x_' + i).classList.add('d-none');
     }
-    document.getElementById('winner').innerHTML = 'Winner';
-
 }
 
 function checkEqual() {
-equal++;
-
+    equal++;
     if (equal == 9 && !gameOver) {
         setTimeout(function () {
             document.getElementById('winner_overlay').classList.remove('d-none');
             document.getElementById('winner').innerHTML = `Equal`;
-
             document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
             document.getElementById('area_restart').innerHTML = `
             <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
             `;
             document.getElementById('winner_is').innerHTML = '';
         }, 500);
-    } 
+    }
 }

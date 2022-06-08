@@ -13,15 +13,8 @@ body {
     align-items: center;
     justify-content: center;
     display: flex;
-    margin-bottom: 30px;
-}
-
-.player2 {
-    font-size: 30px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    margin-bottom: 30px;
+    top: 40px;
+    position: absolute;
 }
 
 h1 img {
@@ -32,15 +25,14 @@ h1 img {
 
 table {
     border-collapse: collapse;
+    width: 400px;
+    height: 400px;
 }
 
-tr {
-    width: 400px;
-}
 
 td {
-    width: 130px;
-    height: 130px;
+    width: 33.33%;
+    height: 33.33%;
     border: 5px solid black;
     position: relative;
     cursor: pointer;
@@ -81,6 +73,14 @@ tr td:last-child {
 .d-none {
     display: none;
 }
+.area_lines {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    position: absolute;
+}
 
 .horizontal_line {
     width: 380px;
@@ -94,6 +94,14 @@ tr td:last-child {
 
 .turn_vertical {
     transform: rotate(90deg) scaleX(0.0);
+}
+
+.turn_diagonal_left {
+    transform: rotate(-45deg) scaleX(0.0);
+}
+
+.turn_diagonal_right {
+    transform: rotate(45deg) scaleX(0.0);
 }
 
 .winner_overlay {
@@ -156,4 +164,10 @@ tr td:last-child {
 
 .restart_game:hover {
     background-color: rgb(206, 203, 203);
+}
+
+@media (max-width: 600px) {
+    .player1 {
+        top: 20px;
+    }
 }
