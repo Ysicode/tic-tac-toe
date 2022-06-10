@@ -13,35 +13,70 @@
     <script src="script.js"></script>
 </head>
 
-<body>
-        <h1 id="player1" class=" player1"><img src="img/x.png" alt="">Player 1</h1>
-        <h1 id="player2" class="player1 d-none"><img src="img/circle.png" alt="">Player 2</h1>
-        <div id="winner_overlay" class="winner_overlay d-none">
-            <div class="d-flex_column">
-                <p id="winner" class="winner">WINNER</p>
-                <div 
-                class="d-flex_center" id="winner_is">
-                </div>
-                <div id="area_restart" class="area_restart">
+<body onload="loadName()">
+    <div class="navbar">
+        <span onclick="openMenu()" class="burger">
+            <span id="line1" class="line1"></span>
+            <span id="line2" class="line2"></span>
+        </span>
+    </div>
+    <div class="navinner d-none" id="navinner">
+        <p class="tictactoe">TIC TAC TOE</p>
+        <div class="navinner_player" onclick="changeName('player1')">
+            <img class="player_icon" src="img/x.png" alt="">
+            <span id="player1" class="name_1"></span>
+            <p id="wins_player1" class="wins_player"></p>
+        </div>
+        <div class="navinner_player" onclick="changeName('player2')">
+            <img class="player_icon" src="img/circle.png" alt="">
+            <span id="player2" class="name_1"></span>
+            <p id="wins_player2" class="wins_player"></p>
+        </div>
 
-                </div>
+        <div class="area_copright">
+            <p class="enjoy">ENJOY</p>
+            <p class="copyright">©Simon Weiss</p>
+        </div>
+    </div>
+    <div id="change_name" class="change_name d-none" onclick="event.stopPropagation()">
+        <input class="inputfield" minlength="4" placeholder="Your name" type="text" name="" id="inputfield">
+    </div>
+    <div id="area_players1" class="area_players1">
+        <img class="player_icon" src="img/x.png" alt="">
+        <span id="players1" class="player1"></span>
+    </div>
+    <div id="area_players2" class="area_players2 d-none">
+        <img class="player_icon" src="img/circle.png" alt="">
+        <span id="players2" class="player1"></span>
+    </div>
+
+    <div id="winner_overlay" class="winner_overlay d-none">
+        <div class="d-flex_column">
+            <p id="winner" class="winner">WINNER</p>
+            <div class="d-flex_center" id="winner_is">
+            </div>
+            <div id="area_restart" class="area_restart">
+
             </div>
         </div>
-     <div class="area_lines">
+    </div>
+    <div class="area_lines">
         <div id="line_1" class="horizontal_line" style="top: 15.5%;"></div>
         <div id="line_2" class="horizontal_line" style="top: 50%;"></div>
         <div id="line_3" class="horizontal_line" style="top: 83%;"></div>
-      
+
         <div id="line_4" class="horizontal_line turn_vertical" style="left: -31%;"></div>
         <div id="line_5" class="horizontal_line turn_vertical" style="left: 3%;"></div>
         <div id="line_6" class="horizontal_line turn_vertical" style="left: 37%;"></div>
-      
-        <div id="line_7" class="horizontal_line turn_diagonal_right" style="left: 3%; transform: rotate(45deg) scaleX(0.0);"></div>
-        <div id="line_8" class="horizontal_line turn_diagonal_left" style="left: 2.6%; transform: rotate(-45deg) scaleX(0.0)"></div>
-     
-     </div>
-   
-    
+
+        <div id="line_7" class="horizontal_line turn_diagonal_right"
+            style="left: 3%; transform: rotate(45deg) scaleX(0.0);"></div>
+        <div id="line_8" class="horizontal_line turn_diagonal_left"
+            style="left: 2.6%; transform: rotate(-45deg) scaleX(0.0)"></div>
+
+    </div>
+
+
     <table>
         <tr>
             <td onclick="fillShape(0)">

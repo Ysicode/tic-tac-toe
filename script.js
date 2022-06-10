@@ -4,6 +4,76 @@ let gameOver = false;
 let winner;
 let equal = 0;
 let player = '';
+let changename = '';
+let names = ['Player 1', 'Player 2'];
+let totalWinsPlayer1 = 0;
+let totalWinsPlayer2 = 0;
+
+document.addEventListener('keydown', keyDown);
+
+
+function keyDown(e) {
+    if (e.key === "Enter") {
+        let newName = document.getElementById('inputfield');
+        if (changename == 'player2') {
+            document.getElementById('player2').innerHTML = `${newName.value}`;
+            names[1] = newName.value;
+            changeName();
+            saveName();
+        } else {
+            document.getElementById('player1').innerHTML = `${newName.value}`;
+            names[0] = newName.value;
+            changeName();
+            saveName();
+        }
+    }
+}
+
+function saveName() {
+    let namesAsText = JSON.stringify(names);
+    localStorage.setItem('name', namesAsText);
+}
+
+function loadName() {
+    let namesAsText = localStorage.getItem('name');
+    if (namesAsText) {
+        names = JSON.parse(namesAsText);
+        document.getElementById('player1').innerHTML = names[0];
+        document.getElementById('player2').innerHTML = names[1];
+        document.getElementById('players1').innerHTML = names[0];
+        document.getElementById('players2').innerHTML = names[1];
+    }
+}
+
+function openMenu() {
+    styleNavIcon();
+    document.getElementById('navinner').classList.toggle('d-none');
+    loadName();
+}
+
+function styleNavIcon() {
+    document.getElementById('line1').classList.toggle('line1_open');
+    document.getElementById('line2').classList.toggle('line2_open');
+}
+
+function changeName(id) {
+    document.getElementById('change_name').classList.toggle('d-none');
+    document.getElementById(`inputfield`).focus();
+    changename = id;
+    document.getElementById('inputfield').value = '';
+}
+
+function countWins(number) {
+    if(number == 1){
+        totalWinsPlayer1++;
+    }else {
+        totalWinsPlayer2++;
+    }
+    document.getElementById('wins_player1').innerHTML = totalWinsPlayer1;
+    document.getElementById('wins_player2').innerHTML = totalWinsPlayer2;
+}
+
+
 
 function fillShape(id) {
     if (!fieldsShape[id] && !gameOver) {
@@ -22,8 +92,8 @@ function fillShape(id) {
 }
 
 function togglePlayers() {
-    document.getElementById('player2').classList.toggle('d-none');
-    document.getElementById('player1').classList.toggle('d-none');
+    document.getElementById('area_players1').classList.toggle('d-none');
+    document.getElementById('area_players2').classList.toggle('d-none');
 }
 
 function draw() {
@@ -45,11 +115,13 @@ function checkWin() {
     if (winner) {
         gameOver = true;
         if (winner == 'circle') {
-            player = 'Player 2';
+            player = names[1];
             winnerPlayer2();
+            countWins(2);
         } else {
-            player = 'Player 1';
+            player = names[0];
             winnerPlayer1();
+            countWins(1);
         }
     }
 }
@@ -104,7 +176,7 @@ function winnerPlayer1() {
             document.getElementById('area_restart').innerHTML = `
         <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
         `;
-        }, 3500);
+        }, 2500);
     }, 1000);
 }
 
@@ -125,7 +197,7 @@ function winnerPlayer2() {
             document.getElementById('area_restart').innerHTML = `
         <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
         `;
-        }, 3500);
+        }, 2500);
     }, 1000);
 }
 
@@ -139,7 +211,7 @@ function showAnimatedWinner2() {
 
 function showAnimatedPlayer() {
     document.getElementById('winner_is').innerHTML = `
-    <img src="img/${winner}.png" alt="">
+    <img class="winner_shape" src="img/${winner}.png" alt="">
     <h2 class="h2">${player}</h2>
     `;
 }
@@ -151,6 +223,8 @@ function restart() {
     winner = '';
     equal = 0;
     player = 'x';
+    document.getElementById('area_players1').classList.remove('d-none');
+    document.getElementById('area_players2').classList.add('d-none');
     resetOverlay();
 }
 
@@ -167,7 +241,7 @@ function resetLines() {
     for (let i = 1; i < 9; i++) {
         document.getElementById('line_' + i).style.transform = 'scaleX(0.0)';
     }
-   
+
     for (let i = 0; i < 9; i++) {
         document.getElementById('circle_' + i).classList.add('d-none');
         document.getElementById('x_' + i).classList.add('d-none');
