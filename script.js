@@ -4,44 +4,30 @@ let gameOver = false;
 let winner;
 let equal = 0;
 let player = '';
-let changename = '';
+let playersId = '';
 let names = ['Player 1', 'Player 2'];
 let totalWinsPlayer1 = 0;
 let totalWinsPlayer2 = 0;
 
 document.addEventListener('keydown', keyDown);
 
-
-function keyDown(e) {
-    if (e.key === "Enter") {
-        let newName = document.getElementById('inputfield');
-        if (changename == 'player2') {
-            document.getElementById('player2').innerHTML = `${newName.value}`;
-            names[1] = newName.value;
-            changeName();
-            saveName();
-        } else {
-            document.getElementById('player1').innerHTML = `${newName.value}`;
-            names[0] = newName.value;
-            changeName();
-            saveName();
-        }
-    }
-}
-
-function saveName() {
-    let namesAsText = JSON.stringify(names);
-    localStorage.setItem('name', namesAsText);
-}
-
+//Functions GameMenu
 function loadName() {
+    getNamesfromArray();
+    loadNamesfromLocalStorage();
+}
+
+function getNamesfromArray() {
+    document.getElementById('player1').innerHTML = names[0];
+    document.getElementById('player2').innerHTML = names[1];
+    document.getElementById('players1').innerHTML = names[0];
+    document.getElementById('players2').innerHTML = names[1];
+}
+
+function loadNamesfromLocalStorage() {
     let namesAsText = localStorage.getItem('name');
     if (namesAsText) {
         names = JSON.parse(namesAsText);
-        document.getElementById('player1').innerHTML = names[0];
-        document.getElementById('player2').innerHTML = names[1];
-        document.getElementById('players1').innerHTML = names[0];
-        document.getElementById('players2').innerHTML = names[1];
     }
 }
 
@@ -59,22 +45,44 @@ function styleNavIcon() {
 function changeName(id) {
     document.getElementById('change_name').classList.toggle('d-none');
     document.getElementById(`inputfield`).focus();
-    changename = id;
+    playersId = id;
     document.getElementById('inputfield').value = '';
 }
 
+function keyDown(e) {
+    if (e.key === "Enter") {
+        if (playersId == 'player2') {
+            updateNewName(0);
+        } else {
+            updateNewName(1);
+        }
+    }
+}
+
+function updateNewName(index) {
+    let newName = document.getElementById('inputfield');
+    document.getElementById(playersId).innerHTML = `${newName.value}`;
+    names[index] = newName.value;
+    changeName();
+    saveName();
+}
+
+function saveName() {
+    let namesAsText = JSON.stringify(names);
+    localStorage.setItem('name', namesAsText);
+}
+
 function countWins(number) {
-    if(number == 1){
+    if (number == 1) {
         totalWinsPlayer1++;
-    }else {
+    } else {
         totalWinsPlayer2++;
     }
     document.getElementById('wins_player1').innerHTML = totalWinsPlayer1;
     document.getElementById('wins_player2').innerHTML = totalWinsPlayer2;
 }
 
-
-
+//Functions PlayGame
 function fillShape(id) {
     if (!fieldsShape[id] && !gameOver) {
         fieldsShape[id] = currentShape;
@@ -104,7 +112,6 @@ function draw() {
         if (fieldsShape[i] == `circle`) {
             document.getElementById(`circle_${i}`).classList.remove('d-none');
         }
-
     }
 }
 
@@ -116,11 +123,11 @@ function checkWin() {
         gameOver = true;
         if (winner == 'circle') {
             player = names[1];
-            winnerPlayer2();
+            animation();
             countWins(2);
         } else {
             player = names[0];
-            winnerPlayer1();
+            animation();
             countWins(1);
         }
     }
@@ -167,47 +174,34 @@ function checkDiagonalLines() {
     }
 }
 
-function winnerPlayer1() {
+function animation() {
+    let restartButton = document.getElementById('area_restart');
     document.getElementById('winner_is').innerHTML = '';
+    if(winner == 'circle') {
+        winAnimation(restartButton, '#3ab3eafc');
+    } else {
+        winAnimation(restartButton, '#67dd8f');
+    }
+}
+
+function winAnimation(restartButton, color) {
     setTimeout(function () {
-        showAnimatedWinner1();
-        showAnimatedPlayer();
+        showAnimatedWinner(color);
         setTimeout(function () {
-            document.getElementById('area_restart').innerHTML = `
-        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
-        `;
+           restartButton.innerHTML = templateRestartButton();
         }, 2500);
     }, 1000);
 }
 
-function showAnimatedWinner1() {
+function showAnimatedWinner(color) {
     document.getElementById('winner_overlay').classList.remove('d-none');
-    document.getElementById('winner').style.color = '#75e690';
+    document.getElementById('winner').style.color = `${color}`;
     setTimeout(() => {
         document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
     }, 100);
+    showAnimatedPlayer();
 }
 
-function winnerPlayer2() {
-    document.getElementById('winner_is').innerHTML = '';
-    setTimeout(function () {
-        showAnimatedWinner2();
-        showAnimatedPlayer();
-        setTimeout(function () {
-            document.getElementById('area_restart').innerHTML = `
-        <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
-        `;
-        }, 2500);
-    }, 1000);
-}
-
-function showAnimatedWinner2() {
-    document.getElementById('winner_overlay').classList.remove('d-none');
-    document.getElementById('winner').style.color = '#3ab3eafc';
-    setTimeout(() => {
-        document.getElementById('winner').style.transform = 'scaleX(1.5) scale3d(1.5, 1.5, 1.5) scaleY(1.5)'
-    }, 100);
-}
 
 function showAnimatedPlayer() {
     document.getElementById('winner_is').innerHTML = `
@@ -261,4 +255,10 @@ function checkEqual() {
             document.getElementById('winner_is').innerHTML = '';
         }, 500);
     }
+}
+
+function templateRestartButton() {
+    return `
+    <button onclick="restart()" id="restart_game" class="restart_game">Restart Game</button>
+    `;
 }
